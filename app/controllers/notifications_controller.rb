@@ -17,5 +17,4 @@ class NotificationsController < ApplicationController
     end
     twiml.text
   end
- 
 end

@@ -11,6 +11,12 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       redirect_to :action => :index
+      @client = Twilio::REST::Client.new Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token
+      @client.account.sms.messages.create(
+        from: '+12054099140',
+        to: @user.number,
+        body: "Thanks for siginging up. To verify your account, please type y. Standard messaging rates apply")
+
     else
       render 'new'
     end
