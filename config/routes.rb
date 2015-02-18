@@ -7,9 +7,17 @@ Rails.application.routes.draw do
 
   post 'twilio/status' => 'twilio#status'
 
-  get 'notifications/receive_msg' => 'notifications#receive_msg'
+  # get 'notifications/receive_msg' => 'notifications#receive_msg'
+
+  # match 'notifications/receive_msg' => 'notifications#receive_msg'
+
+  resources :verifications
 
   resources :users
+
+  resources :notifications
+
+  post 'notifications/receive_msg' => 'notifications#receive_msg'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

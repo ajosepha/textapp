@@ -14,7 +14,7 @@ class UsersController < ApplicationController
       @client = Twilio::REST::Client.new Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token
       @client.account.sms.messages.create(
         from: '+12054099140',
-        to: @user.number,
+        to: @user.phone_number,
         body: "Thanks for siginging up. To verify your account, please type y. Standard messaging rates apply")
 
     else
@@ -27,6 +27,6 @@ class UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:name, :number)
+    params.require(:user).permit(:name, :phone_number)
   end
 end
