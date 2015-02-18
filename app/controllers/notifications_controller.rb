@@ -5,13 +5,26 @@ class NotificationsController < ApplicationController
   skip_before_action :verify_authenticity_token
  
   def index
-    puts params[:from]
-    puts params
-    puts "this is what gets hit when i get a message"
-    create
+    puts params[:From]
+    puts params[:Body]
+    @sender = params[:From]
+    if params[:Body].downcase == "time"
+      time_request
+    else
+      puts "this is what gets hit when i get a message"
+      create
+    end
   end
 
   def show
+  end
+
+  def time_request
+     @client = Twilio::REST::Client.new Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token
+      @client.account.messages.create(
+        from: '+12054099140',
+        to: @sender,
+        body: "Great, what time is your date?")   
   end
 
   def notify
@@ -21,20 +34,12 @@ class NotificationsController < ApplicationController
   end
 
   def create
-    # skip_before_filter :verify_authenticity_token, :if =>lambda{ params[:api_key].present?}
     sender = params[:From]
     puts sender
       @client = Twilio::REST::Client.new Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token
       @client.account.messages.create(
         from: '+12054099140',
         to: sender,
-        body: "Thanks for siginging up. yay")
-
-  # @client = Twilio::REST::Client.new  @client = Twilio::REST::Client.new Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token
-      
-  end
-
-  def receive_msg
-  
+        body: "Thanks for siginging up. yay")   
   end
 end
