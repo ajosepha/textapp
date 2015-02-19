@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :users
   root 'static_pages#home'
+  devise_for :users
 
   post 'twilio/voice' => 'twilio#voice'
 
@@ -9,8 +9,6 @@ Rails.application.routes.draw do
   post 'twilio/status' => 'twilio#status'
 
   resources :verifications
-
-  # resources :users
 
   resources :notifications
 
