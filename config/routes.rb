@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   resources :verifications
 
-  resources :users
+  # resources :users
 
   resources :notifications
 
