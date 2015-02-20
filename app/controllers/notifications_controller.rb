@@ -17,7 +17,8 @@ class NotificationsController < ApplicationController
   end
 
   def test_message
-    render :nothing => true
+    # render :nothing => true
+    redirect_to :back
     @sender = "+1" + current_user.phone_number
     puts @sender.class
     puts @sender
