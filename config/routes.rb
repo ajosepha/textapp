@@ -11,9 +11,13 @@ Rails.application.routes.draw do
 
   post 'twilio/status' => 'twilio#status'
 
+  # post 'notififications/test_message' => 'notififications#test_message'
+
   resources :verifications
 
-  resources :notifications
+  resources :notifications do
+    post 'test_message'
+  end
 
 
 

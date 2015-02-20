@@ -16,7 +16,16 @@ class NotificationsController < ApplicationController
     end
   end
 
-  def show
+  def test_message
+    render :nothing => true
+    @sender = "+1" + current_user.phone_number
+    puts @sender.class
+    puts @sender
+    @client = Twilio::REST::Client.new Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token
+      @client.account.messages.create(
+        from: '+12054099140',
+        to: @sender,
+        body: "This is a test message")   
   end
 
   def time_request

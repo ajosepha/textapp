@@ -16,7 +16,6 @@ class UsersController < ApplicationController
         from: '+12054099140',
         to: @user.phone_number,
         body: "Thanks for siginging up. To verify your account, please type y. Standard messaging rates apply")
-
     else
       render 'new'
     end
