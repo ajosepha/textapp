@@ -6,18 +6,28 @@ class NotificationsController < ApplicationController
   skip_before_action :verify_authenticity_token
  
   def index
-    puts params[:From]
+    #check recipient is in databse of users
+    user_sender = params[:From].slice(2..11)
+    @user = User.find_by phone_number: user_sender
+    puts @user.email
     puts params[:Body]
     @sender = params[:From]
     if params[:Body].downcase == "time"
       time_request
-    elsif params[:Body].to_i
+    elsif is_i?(params[:Body])
+      puts "you entered a number"
       @time = params[:Body].to_i
-      time_request   
+      time_request  
+    elsif params[:Body].downcase == "help"
+      puts "let's get you out of there!"
     else
       puts "this is what gets hit when i get a message"
       create
     end
+  end
+
+  def is_i?(str)
+    str.to_i.to_s == str
   end
 
   def test_message
@@ -37,13 +47,12 @@ class NotificationsController < ApplicationController
     s = Rufus::Scheduler.singleton
     timex = (@time * 60).to_s + 's'
     puts timex 
-
     s.in timex do
       @client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
       @client.account.messages.create(
         from: '+12054099140',
         to: @sender,
-        body: "I sent you a delayed text")
+        body: "Hi, can you call me? Know you're out, but it's really important :(")
     end
 
         
@@ -62,6 +71,6 @@ class NotificationsController < ApplicationController
       @client.account.messages.create(
         from: '+12054099140',
         to: sender,
-        body: "Thanks for siginging up. yay")   
+        body: "Thanks for the message. yay")   
   end
 end
