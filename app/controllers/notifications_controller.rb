@@ -1,4 +1,5 @@
 require 'twilio-ruby'
+require 'rufus-scheduler'
 
 class NotificationsController < ApplicationController
  
@@ -11,7 +12,8 @@ class NotificationsController < ApplicationController
     if params[:Body].downcase == "time"
       time_request
     elsif params[:Body].to_i
-      puts "I will enter a time"     
+      @time = params[:Body].to_i
+      time_request   
     else
       puts "this is what gets hit when i get a message"
       create
@@ -31,11 +33,20 @@ class NotificationsController < ApplicationController
   end
 
   def time_request
-     @client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
+    puts "this will be a timed fcn"
+    s = Rufus::Scheduler.singleton
+    timex = (@time * 60).to_s + 's'
+    puts timex 
+
+    s.in timex do
+      @client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
       @client.account.messages.create(
         from: '+12054099140',
         to: @sender,
-        body: "Great, in how many minutes do you want me to text? Please enter a number")   
+        body: "I sent you a delayed text")
+    end
+
+        
   end
 
   def notify
