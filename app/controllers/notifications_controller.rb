@@ -10,6 +10,8 @@ class NotificationsController < ApplicationController
     @sender = params[:From]
     if params[:Body].downcase == "time"
       time_request
+    elsif params[:Body].to_i
+      puts "I will enter a time"     
     else
       puts "this is what gets hit when i get a message"
       create
@@ -29,11 +31,11 @@ class NotificationsController < ApplicationController
   end
 
   def time_request
-     @client = Twilio::REST::Client.new Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token
+     @client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
       @client.account.messages.create(
         from: '+12054099140',
         to: @sender,
-        body: "Great, what time is your date?")   
+        body: "Great, in how many minutes do you want me to text? Please enter a number")   
   end
 
   def notify
@@ -45,7 +47,7 @@ class NotificationsController < ApplicationController
   def create
     sender = params[:From]
     puts sender
-      @client = Twilio::REST::Client.new Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token
+      @client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
       @client.account.messages.create(
         from: '+12054099140',
         to: sender,
