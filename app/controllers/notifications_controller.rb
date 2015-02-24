@@ -22,7 +22,7 @@ class NotificationsController < ApplicationController
     @sender = "+1" + current_user.phone_number
     puts @sender.class
     puts @sender
-    @client = Twilio::REST::Client.new Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token
+    @client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
       @client.account.messages.create(
         from: '+12054099140',
         to: @sender,
