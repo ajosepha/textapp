@@ -14,15 +14,15 @@ class NotificationsController < ApplicationController
     @sender = params[:From]
     if params[:Body].downcase == "time"
       time_request
-    elsif is_i?(params[:Body])
-      puts "you entered a number"
-      @time = params[:Body].to_i
-      time_request  
-    elsif params[:Body].downcase == "help"
-      puts "let's get you out of there!"
-    else
-      puts "this is what gets hit when i get a message"
-      create
+      elsif is_i?(params[:Body])
+        puts "you entered a number"
+        @time = params[:Body].to_i
+        time_request  
+      elsif params[:Body].downcase == "help"
+        puts "let's get you out of there!"
+      else
+        puts "this is what gets hit when i get a message"
+        create
     end
   end
 
@@ -46,16 +46,13 @@ class NotificationsController < ApplicationController
     puts "this will be a timed fcn"
     s = Rufus::Scheduler.singleton
     timex = (@time * 60).to_s + 's'
-    puts timex 
     s.in timex do
       @client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
       @client.account.messages.create(
         from: '+12054099140',
         to: @sender,
         body: "Hi, can you call me? Know you're out, but it's really important :(")
-    end
-
-        
+    end        
   end
 
   def notify
